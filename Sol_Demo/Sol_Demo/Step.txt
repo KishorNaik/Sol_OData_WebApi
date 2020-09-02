@@ -1,0 +1,41 @@
+﻿Step 1:
+Download following package from nuget server
+Microsoft.AspNetCore.OData
+Microsoft.AspNetCore.Mvc.NewtonsoftJson
+
+Step 2: 
+Make a Model, Check StudentModel Class
+
+Step 3:
+Make StudentController class, Check StudentController class
+
+[EnableQuery] attribute decorate in action method where Odata action will perform.
+
+Step 4:
+let’s start with the ConfigureServices method in our startup.cs file as follows:
+
+ public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers().AddNewtonsoftJson();
+
+            services.AddOData();
+        }
+
+
+Step 5:
+Implementing in the Configure method as follows:
+
+app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.EnableDependencyInjection();
+                endpoints.Select().Filter().OrderBy().Count().MaxTop(10);
+            });
+
+Step 6
+
+http://localhost:27636/api/student/list?$select=name,score&$filter=score gt 70&$orderby=name asc
+
+Resource:
+https://devblogs.microsoft.com/odata/enabling-endpoint-routing-in-odata/
+https://devblogs.microsoft.com/odata/experimenting-with-odata-in-asp-net-core-3-1/
